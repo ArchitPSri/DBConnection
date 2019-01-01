@@ -1,6 +1,6 @@
 ﻿using System;
-using MySql.Data;
-using MySql.Data.MySqlClient;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DBConnection
 {
@@ -21,34 +21,36 @@ namespace DBConnection
             get { return databaseName; }
             set { databaseName = value; }
         }
-
-        public string Password { get; set; }
-        private MySqlConnection connection = null;
-        public MySqlConnection Connection
+        
+        private SqlConnection connection = null;
+        public SqlConnection Connection
         {
             get { return connection; }
         }
 
-        private static DBConnectionClass _instance = null;
-        public static DBConnectionClass Instance()
-        {
-            if (_instance == null)
-                _instance = new DBConnectionClass();
-            return _instance;
-        }
-
         public bool IsConnect()
         {
-            if (Connection == null)
+            try
             {
-                if (String.IsNullOrEmpty(databaseName))
-                    return false;
-                string connstring = string.Format("Server=localhost; database={0}; UID=UserName; password=your password", databaseName);
-                connection = new MySqlConnection(connstring);
-                connection.Open();
-            }
+                if (Connection == null)
+                {
+                    if (String.IsNullOrEmpty(databaseName))
+                        return false;
+                    string connstring = @"Data Source=DESKTOP-VI9R21J\SQLSERVER_ARCHIT;Initial Catalog=" + databaseName + "; user id=sa; password=Password@123";
+                    
+                    connection = new SqlConnection(connstring);
+                    
+                    connection.Open();
+                }
 
-            return true;
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+                System.Diagnostics.Debug.WriteLine("CATCH -> IsConnect");
+                throw e;
+            }
         }
 
         public void Close()
