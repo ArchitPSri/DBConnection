@@ -10,11 +10,6 @@ namespace DBConnection
         {
         }
 
-        public int Demo(int a)
-        {
-            return a + 10;
-        }
-
         private string databaseName = string.Empty;
         public string DatabaseName
         {
@@ -47,8 +42,7 @@ namespace DBConnection
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e);
-                System.Diagnostics.Debug.WriteLine("CATCH -> IsConnect");
+                System.Diagnostics.Debug.WriteLine("Unsuccesfull Connection Building");
                 throw e;
             }
         }
